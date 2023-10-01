@@ -5,14 +5,13 @@ from rest_framework.decorators import api_view
 from .models import User
 from .serializers import RegisterUserSerializer, CustomTokenObtainPairSerializer
 
-
 @api_view(["POST"])
 def register(request):
     data=request.data
 
     serializer=RegisterUserSerializer(data=data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(password=make_password(data["password"]))
         return Response()
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
