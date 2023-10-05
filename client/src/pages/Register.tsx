@@ -17,7 +17,7 @@ const Register = () => {
   const [re_password, setRePassword] = useState("");
 
   const registerMutation = useMutation({
-    mutationFn: () => register({email, name, last_name, password}),
+    mutationFn: () => register(email, name, last_name, password),
       onSuccess: () => {
       toast.success("Registro exitoso! Hace login!")
       navigate("/login")
@@ -26,10 +26,6 @@ const Register = () => {
       toast.error("Hubo un error, intenta devuelta")
     }
   })
-
-  const handleMatch = () => {
-    return (password === re_password)
-  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -43,7 +39,7 @@ const Register = () => {
   if (registerMutation.isLoading) return <p>Loading...</p>
   if (isAuth) return (<Navigate to="/"/>)
 
-    return (
+  return (
       <div
         className="flex flex-col items-center justify-center px-6 py-8
         mx-auto md:h-[800px] lg:py-0"
@@ -191,12 +187,6 @@ const Register = () => {
                   dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
               </div>
-
-              {handleMatch() ? false : (
-                <p className="text-sm font-medium text-red-500">
-                  Passwords must match
-                </p>
-              )}
 
               <button
                 type="submit"

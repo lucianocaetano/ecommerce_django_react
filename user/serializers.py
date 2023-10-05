@@ -5,7 +5,7 @@ from .models import User
 class RegisterUserSerializer(serializers.ModelSerializer):
 
     class Meta:
-        models = User
+        model = User
         fields = ["email", "name", "last_name", "password"]
         read_only_fields = ['password']
 
@@ -20,4 +20,4 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["avatar"] = user.avatar.url
         token["is_staff"] = user.is_staff
 
-        return Token
+        return token

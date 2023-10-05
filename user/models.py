@@ -24,9 +24,10 @@ class CustomUserManager(UserManager):
         extra_fields.setdefault("is_staff", False)
         return self._create_user(email, password, **extra_fields)
 
-    def creates_uperuser(self, email, password, **extra_fields):
+    def create_superuser(self, email, password, **extra_fields):
 
         extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
         return self._create_user(email, password, **extra_fields)
 
 class User (AbstractBaseUser, PermissionsMixin):
@@ -39,7 +40,7 @@ class User (AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ("name", "last_name")
 
     class Meta:
         ordering = ["-date_joined"]
