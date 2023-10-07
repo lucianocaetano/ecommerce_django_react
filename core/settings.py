@@ -62,6 +62,7 @@ AUTH_USER_MODEL="user.User"
 # Application definition
 
 INSTALLED_APPS = [
+    "products",
     "user",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",

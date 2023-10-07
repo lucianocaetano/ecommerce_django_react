@@ -5,5 +5,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("user/", include("user.urls"))
+    path("user/", include("user.urls")),
+    path("/", include("products.urls"))
 ] + static(settings.MEDIA_URL, domunet_root=settings.MEDIA_ROOT)
