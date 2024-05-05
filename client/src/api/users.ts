@@ -1,4 +1,4 @@
-import {useAxios} from "./useAxios.ts"
+import {Axios} from "./useAxios.ts"
 
 export const register = async (
   email: string,
@@ -7,7 +7,7 @@ export const register = async (
   password: string,
 
 ) => {
-  await useAxios.post(`/user/register/`, {
+  await Axios.post(`/user/register/`, {
     email, name, last_name, password
   })
 }
@@ -16,8 +16,7 @@ export const login = async (
   email: string,
   password: string
 ) => {
-  const res = await useAxios.post(`/user/login/`, {email, password})
-  console.log(res)
+  const res = await Axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login/`, {email, password})
   const data = await res.data
   return data
 }

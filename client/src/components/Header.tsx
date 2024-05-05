@@ -3,7 +3,7 @@
 function Header () {
   return (
     <nav>
-      <p>Hola xd</p>
+      <p>Hola xd navbar</p>
     </nav>
   )
 

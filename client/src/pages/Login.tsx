@@ -1,4 +1,4 @@
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../api/users";
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
@@ -13,16 +13,15 @@ function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const loginMutation = useMutation({
     mutationFn: () => login(email, password),
     onSuccess: (res) => {
       setToken(res.access, res.refresh)
       toast.success("Logeo exitoso! Hace login!")
-      navigate("/login")
+      navigate("/")
     },
     onError: (err) => {
-      console.error(err)
+      console.log(err)
       toast.error("Hubo un error, intenta devuelta")
     }
   })
@@ -33,8 +32,7 @@ function Login() {
   }
 
   if (loginMutation.isLoading) return <p>Loading...</p>
-  if (isAuth) return (<Navigate to="/"/>)
-
+  if (isAuth) navigate("/") 
   return (
       <div
         className="flex flex-col items-center justify-center
