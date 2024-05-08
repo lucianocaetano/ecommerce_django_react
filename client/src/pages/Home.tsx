@@ -14,18 +14,13 @@ function Home(){
     isLoading,
     isError,
     error,
-    isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
   } =  useInfiniteQuery({
     queryKey: ["products"],
     queryFn: get_products,
     getNextPageParam: (lastPage) => {
-      if(lastPage.next){
-        const url = new URL(lastPage.next)
-        return parseInt(url.searchParams.get("page"))
-      }
-      return null
+      return lastPage.meta.next
     }
   })
 
@@ -35,22 +30,21 @@ function Home(){
     }
   }, [inView, hasNextPage])
 
-  const paginate = data?.pages[0]
-
-  if(isLoading)
-    return <p>Loading ...</p>
-
   if(isError){
     toast.error(error.message)
-    return (
-      <div>{error.message}</div>
-    )
   }
 
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 flex justify-center max-w-4xl mx-auto px-8">
-      {paginate.results && paginate.results.map((product: Product, index: number) => (
-        <ProductCard key={index} product={product}/>
+    <div className="grid pt-11 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex justify-center max-w-4xl mx-auto px-8 dark:text-white">
+      {data?.pages.map((paginate, index: number)=>(
+        <div key={index}>
+          {!isLoading && paginate?.results && paginate.results.map((product: Product, index: number) => (
+            <ProductCard key={index} product={product} />
+          ))}
+          {!isLoading && paginate?.results.length === 0 && (<p>No more results</p>)}
+          {isLoading && (<p>loading ...</p>)}
+          {isError && (<p>{error.message}</p>)}
+        </div>
       ))}
     </div>
   );

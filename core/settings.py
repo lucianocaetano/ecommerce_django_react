@@ -15,8 +15,7 @@ SECRET_KEY = 'django-insecure-plwl(!3xawg%e$!z$&euuqw1t5_cv%jf5hugbfnhmt#z-mqb5@
 DEBUG = True
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
+    'DEFAULT_PAGINATION_CLASS': "products.pagination.CustomPageNumberPagination",
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),

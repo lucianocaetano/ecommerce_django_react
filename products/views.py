@@ -1,7 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import generics, status, viewsets
-from core.pagination import CustomPagination
 from .serializers import *
 from .models import *
 

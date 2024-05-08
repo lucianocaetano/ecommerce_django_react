@@ -14,7 +14,7 @@ function Layout () {
     <div>
       <Toaster/>
       <Header/>
-      <div className="min-h-[100px] bg-white dark:bg-gray-900">
+      <div className="min-h-[1000px] bg-white dark:bg-gray-900">
         <Outlet/>
       </div>
     </div>
