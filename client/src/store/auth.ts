@@ -1,13 +1,13 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
-type State = {
+interface State {
   access: string
   refresh: string
-  isAuth: boolean;
+  isAuth: boolean
 }
 
-type Actions = {
+interface Actions {
   setToken: (access: string, refresh: string) => void
   logout: () => void
 }
@@ -22,7 +22,7 @@ export const useAuthStore = create(
         set(()=>({
           access,
           refresh,
-          isAuth: !!access && !!refresh,
+          isAuth: true,
         }))
       },
       logout: () => {
@@ -33,6 +33,6 @@ export const useAuthStore = create(
         }))
       }
     }),
-    {name: "auth "}
+    {name: "auth"}
   )
 )

@@ -3,11 +3,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-
     class Meta:
         model = User
         fields = "__all__"
-
 
 class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,5 +20,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["email"] = user.email
         token["avatar"] = user.avatar.url
         token["is_staff"] = user.is_staff
-
+        token["cart"] = print(user.cart)
+        print(user.cart)
         return token

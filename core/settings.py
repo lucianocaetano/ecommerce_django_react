@@ -73,6 +73,8 @@ AUTH_USER_MODEL="user.User"
 
 INSTALLED_APPS = [
     "products",
+    'django_filters',
+    "carts",
     "user",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",

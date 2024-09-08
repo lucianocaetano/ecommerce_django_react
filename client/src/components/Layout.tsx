@@ -1,23 +1,18 @@
-import {Outlet, useNavigate} from "react-router-dom"
-import Header from "./Header"
+import React from "react"
 import { Toaster } from "react-hot-toast"
-import {useAuthStore} from "../store/auth"
+import {Outlet} from "react-router-dom"
+import Header from "./Header"
 
-function Layout () {
-  const {isAuth} = useAuthStore()
-  const navigate = useNavigate()
-
-  if(!isAuth)
-    navigate("/login")
+const Layout: React.FC = () => {
 
   return(
-    <div>
-      <Toaster/>
+    <>
       <Header/>
-      <div className="min-h-[1000px] bg-white dark:bg-gray-900">
+      <div className="h-screen bg-gray-50 dark:bg-gray-900">
         <Outlet/>
       </div>
-    </div>
+      <Toaster/>
+    </>
   )
 }
 export default Layout;

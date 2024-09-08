@@ -8,5 +8,6 @@ api_prefix="api/v1/"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("user/", include("user.urls")),
-    path(api_prefix, include("products.urls"))
+    path(api_prefix+"product/", include("products.urls")),
+    path(api_prefix+"cart/", include("carts.urls"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

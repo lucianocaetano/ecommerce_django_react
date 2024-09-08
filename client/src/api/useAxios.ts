@@ -5,46 +5,50 @@ export const logout = () => {
   useAuthStore.getState().logout()
 }
 
-export const Axios = axios.create()
+export const Axios = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_URL
+})
+
+function isTokenExpired(token: string) {
+  if(!token) return true
+  const payloadBase64 = token.split('.')[1];
+  const decodedPayload = JSON.parse(atob(payloadBase64));
+  const currentTime = Math.floor(Date.now() / 1000);
+
+  return decodedPayload.exp > currentTime;
+}
 
 Axios.interceptors.request.use(
   async (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
   const token: string = useAuthStore.getState().access;
-  if(!(config.url === "/user/login/" || config.url === "/user/register/")){
-    config.headers = {
-      "Authorization": `Bearer ${token}`
-    } as AxiosRequestHeaders
-  }
-  return config
-})
 
-Axios.interceptors.response.use(
-  (response: AxiosResponse) => response,
-  async (error) => {
-    if (error.response && error.response.status === 401 || error.response.status === 403) {
-      const refreshToken = useAuthStore.getState().refresh;
+  if(isTokenExpired(token)){
+    if(token !== ""){
+      config.headers = {
+        "Authorization": `Bearer ${token}`
+      } as AxiosRequestHeaders
+    }
+  }else {
+    const refreshToken = useAuthStore.getState().refresh;
+    if (refreshToken) {
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/refresh/`, {
+          refresh: refreshToken,
+        });
 
-      if (refreshToken) {
-        try {
-          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/refresh/`, {
-            refresh: refreshToken,
-          });
+        console.log("hola")
+        const newAccessToken = response.data.access;
+        const newRefreshToken = response.data.refresh;
 
-          const newAccessToken = response.data.access;
-          const newRefreshToken = response.data.refresh;
-
-          useAuthStore.getState().setToken(newAccessToken, newRefreshToken);
-
-          error.config.headers['Authorization'] = `Bearer ${newAccessToken}`;
-
-          return axios(error.config);
-        } catch (err) {
-          useAuthStore.getState().logout();
-        }
+        useAuthStore.getState().setToken(newAccessToken, newRefreshToken);
+        config.headers = {
+          "Authorization": `Bearer ${newAccessToken}`
+        } as AxiosRequestHeaders
+      } catch (err) {
+        useAuthStore.getState().logout();
       }
     }
-
-    return Promise.reject(error)
   }
-);
 
+  return config
+})

@@ -35,6 +35,7 @@ class User (AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=100)
     avatar = models.ImageField(default="user.png")
     date_joined = models.DateTimeField(default=timezone.now)
+    address = models.TextField()
     is_staff = models.BooleanField(default=False)
     objects = CustomUserManager()
 
