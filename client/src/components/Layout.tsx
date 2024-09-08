@@ -8,9 +8,7 @@ const Layout: React.FC = () => {
   return(
     <>
       <Header/>
-      <div className="h-screen bg-gray-50 dark:bg-gray-900">
-        <Outlet/>
-      </div>
+      <Outlet/>
       <Toaster/>
     </>
   )

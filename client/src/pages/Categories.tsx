@@ -34,7 +34,7 @@ export default function Example() {
   }, [filter])
 
   return (
-    <div >
+    <div>
       {/* Mobile filter dialog */}
       <Dialog open={mobileFiltersOpen} onClose={setMobileFiltersOpen} className="relative z-40 lg:hidden">
         <DialogBackdrop
@@ -42,7 +42,7 @@ export default function Example() {
           className="fixed inset-0 bg-black bg-opacity-25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
         />
 
-        <div className="fixed inset-0 z-40 flex ">
+        <div className="fixed inset-0 z-40">
           <DialogPanel
             transition
             className="relative ml-auto flex w-full max-w-xs transform flex-col shadow-xl transition duration-300 ease-in-out data-[closed]:translate-x-full"
@@ -62,7 +62,7 @@ export default function Example() {
               {/* Filters */}
               <form className="mt-4">
                 <div className="space-y-6">
-                  <div id="countries" className="border-l-4 p-2  border-r-4 border-gray-600 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <div id="countries" className="border-l-4 p-2 border-r-4 border-gray-600 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <label className="cursor-pointer">
                       <input type="radio" name="category" className="me-1" onClick={()=>handleChangeFilter(undefined)}/>
                       All
@@ -112,7 +112,7 @@ export default function Example() {
           <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
             <form className="mt-4 max-lg:hidden">
               <div className="space-y-6">
-                <div id="countries" className="border-l-4 p-2  border-r-4 border-gray-600 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <div id="countries" className="border-l-4 p-2 border-r-4 border-gray-600 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   <label className="cursor-pointer">
                     <input type="radio" name="category" className="me-1" onClick={()=>handleChangeFilter(undefined)}/>
                     All

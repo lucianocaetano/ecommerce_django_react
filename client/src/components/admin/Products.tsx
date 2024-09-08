@@ -130,11 +130,7 @@ const Products = ({ search }: Props) => {
               </tr>
             ))}
           </tbody>
-          {!isLoading && (
-            <p className="text-xl my-4 ms-11 text-slate-800 dark:text-slate-200">
-              No more results
-            </p>
-          )}
+          
           {!isLoading &&
             data?.pages?.length !== undefined &&
             data.pages.length > 0 &&
