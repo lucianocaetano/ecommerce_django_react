@@ -1,0 +1,8 @@
+import {AxiosResponse} from "axios"
+import {Axios} from "./useAxios"
+
+export const get_products = async ({ pageParam = 1 }): Promise<AxiosResponse> => {
+  console.log("hola")
+    const response = await Axios.get(`/products/?page=${pageParam}&pages=9`)
+    return response.data
+};
