@@ -25,6 +25,7 @@ const Products = ({ search }: Props) => {
     refetch
   } = useQuery({queryKey: ["products_search"], queryFn: ()=>get_products_search(search)});
 
+  useEffect(()=>{refetch()}, [search])
   
   const deleteProdMutation = useMutation({
     mutationFn: (id: number)=>delete_product(id),
@@ -36,8 +37,6 @@ const Products = ({ search }: Props) => {
       toast.error("Error!");
     },
   });
-
-  useEffect(()=>{refetch()}, [search])
 
   if (deleteProdMutation.isLoading) {return <p>loading...</p>}
 

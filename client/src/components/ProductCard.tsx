@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom"
 import React, {useContext} from "react"
-import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
-import {Product, Image} from "../Interface"
+import { FaArrowRight } from "react-icons/fa";
+import {Product} from "../Interface"
 import { CartContext } from "../context/cart.context";
 import {useAuthStore} from "../store/auth";
-import {Carousel} from "flowbite-react";
 
 const ProductCard: React.FC<{product: Product}> = ({product}) => {
   const {isAuth} = useAuthStore()

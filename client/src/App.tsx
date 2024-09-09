@@ -6,6 +6,7 @@ import Login from "./pages/Login.tsx"
 import Admin from './pages/Admin.tsx'
 import DetailProduct from './pages/DetailProduct.tsx'
 import Categories from "./pages/Categories.tsx"
+import SearchPage from './pages/SearchPage.tsx'
 
 function App () {
   return (
@@ -13,6 +14,7 @@ function App () {
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="search/:search" element={<SearchPage />} />
           <Route path="product/:slug" element={<DetailProduct/>} />
           <Route path="login/" element={<Login />} />
           <Route path="register/" element={<Register/>} />

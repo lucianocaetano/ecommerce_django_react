@@ -1,8 +1,7 @@
 import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
 import { useDarkMode } from "../store/theme";
 import Logo from "../assets/logo.png"
-import UserDefault from "../assets/user.png"
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { HiOutlineShoppingBag } from "react-icons/hi";
@@ -16,6 +15,7 @@ const Header: React.FC = () => {
   const navigate = useNavigate()
 
   const [hiddenMenu, setHiddenMenu] = useState<boolean>(false)
+  const [search, setSearch] = useState<string>(null);
   const toggleHiddenMenu = () => {setHiddenMenu(!hiddenMenu)}
 
   const { toggleDarkMode, darkMode } = useDarkMode();
@@ -23,18 +23,33 @@ const Header: React.FC = () => {
   const { isAuth } = useAuthStore()
 
   let is_admin: boolean;
-  //let user_id: number;
   let avatar: string;
 
   if(isAuth) {
     const tokenDecoded: Token = jwt_decode(token)
     is_admin = tokenDecoded.is_staff;
-    //user_id = tokenDecoded.user_id;
     avatar = String(tokenDecoded.avatar)
   }
 
+  useEffect(()=>{
+    if(search !== ""){
+      navigate(`search/${search}`)
+    }else{
+      navigate("/")
+    }
+  }, [search])
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value)
+    setSearch(event.target.value)
+  }
+
+  const handleOnSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if(search !== ""){
+      navigate(`search/${search}`)
+    }else{
+      navigate("/")
+    }
   }
 
   function log_out() {
@@ -106,20 +121,21 @@ const Header: React.FC = () => {
                 </div>
               </div>
 
-              <div className="relative hidden md:block">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <form onSubmit={handleOnSearch} className="relative hidden md:block">
+                <button type="submit" className="absolute inset-y-0 left-0 flex items-center pl-3 cursor-pointer">
                   <svg className="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" ></path></svg>
-                  <span className="sr-only">Search icon</span>
-                </div>
+                </button>
                 <input
                   type="text"
                   onChange={handleInputChange}
+                  value={search}
                   className="block w-full md:w-[200px] lg:w-[400px] xl:w-[600px] p-2
                   pl-10 text-sm text-gray-900 border border-gray-300 rounded-full
                   bg-gray-50 dark:bg-gray-700 outline-none
                   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                  " placeholder="Search..."/>
-              </div>
+                  " placeholder="Search..."
+                />
+              </form>
 
               <div className="absolute space-x-2 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
@@ -189,51 +205,45 @@ const Header: React.FC = () => {
             </div>
           </div>
           <Disclosure.Panel className="md:hidden">
-            <div className="flex mx-2">
-              <div className="absolute inset-y-[72px] left-2 px-4 flex pl-3 pointer-events-none">
-                <svg className="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-                <span className="sr-only">Search icon</span>
-              </div>
-              <input type="text" id="search-navbar" className="block w-full p-2
+            <form onSubmit={handleOnSearch} className="relative mx-4">
+              <button type="submit" className="absolute inset-y-0 left-0 flex items-center pl-3 cursor-pointer">
+                <svg className="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" ></path></svg>
+              </button>
+              <input
+                type="text"
+                onChange={handleInputChange}
+                value={search}
+                className="block w-full md:w-[200px] lg:w-[400px] xl:w-[600px] p-2
                 pl-10 text-sm text-gray-900 border border-gray-300 rounded-full
                 bg-gray-50 dark:bg-gray-700 outline-none
                 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                " placeholder="Search..."/>
-            </div>
+                " placeholder="Search..."
+              />
+            </form>
             <div className="space-y-1 px-2 pb-3 pt-2">
-              {isAuth ? (
-                <div className="w-full grid grid-cols-1">
-                  <Link
-                    to={'/'}
-                    className='bg-slate-400 p-2 px-4 rounded-lg text-black dark:bg-gray-900 dark:text-white'
-                  >
-                    Home
-                  </Link>
+              <div className="w-full grid grid-cols-1">
+                <Link
+                  to={'/'}
+                  className='bg-slate-400 p-2 px-4 rounded-lg text-black dark:bg-gray-900 dark:text-white'
+                >
+                  Home
+                </Link>
 
-                  <Link
-                    to={'/cate'}
-                    className='text-black p-2 px-4 rounded-lg hover:bg-slate-400 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
-                  >
-                    Categories
-                  </Link>
-                </div>
-              ) : (
-                <div className="w-full grid grid-cols-1">
-                  <Link
+                <Link
+                  to={'/cate'}
+                  className='text-black p-2 px-4 rounded-lg hover:bg-slate-400 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
+                >
+                  Categories
+                </Link>
+                {!isAuth && (
+                  <NavLink
                     to={'/login'}
-                    className='bg-slate-400 p-2 px-4 rounded-lg text-black dark:bg-gray-900 dark:text-white'
-                  >
-                    Log in
-                  </Link>
-
-                  <Link
-                    to={'/register'}
                     className='text-black p-2 px-4 rounded-lg hover:bg-slate-400 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
-                    Sign up
-                  </Link>
-                </div>
-              )}
+                    Login
+                  </NavLink>
+                )}
+              </div>
               {is_admin  && (
                 <div className="w-full">
                   <Link
