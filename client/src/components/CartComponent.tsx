@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import {useDarkMode} from "../store/theme"
 import { toast } from "react-hot-toast";
 import { Dialog, Transition } from '@headlessui/react'
@@ -10,6 +10,8 @@ import {CartCard} from "./CartCard"
 import Checkout from "./Checkout";
 
 export const CartComponent: React.FC<{hiddenMenu: boolean, toggleHiddenMenu: () => void}> = ({hiddenMenu, toggleHiddenMenu}) => {
+  const [checkout, setCheckout] = useState(false)
+
   const {darkMode} = useDarkMode(state => state)
   const queryClient = useQueryClient()
 
@@ -77,6 +79,10 @@ export const CartComponent: React.FC<{hiddenMenu: boolean, toggleHiddenMenu: () 
       return cart_items
     })
   }})
+
+  useEffect(()=>{
+    setCheckout(false)
+  }, [hiddenMenu])
 
   const handleDeleteCartItem = (id: number) => { mutateDestroyCartItem.mutate(id) }
 
@@ -147,9 +153,10 @@ export const CartComponent: React.FC<{hiddenMenu: boolean, toggleHiddenMenu: () 
                               <p>${cart.subtotal}</p>
                             </div>
                             <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                            
-                            <Checkout amount={cart.subtotal}/>
 
+                            <button onClick={()=>setCheckout(true)} className="flex ml-auto w-full text-center text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
+                              Checkout
+                            </button>
                           </>
                         )}
                       </div>
@@ -161,6 +168,11 @@ export const CartComponent: React.FC<{hiddenMenu: boolean, toggleHiddenMenu: () 
           </div>
         </Dialog>
       </Transition>
+      {
+        hiddenMenu && checkout && (
+          <Checkout amount={cart.subtotal}/>
+        )
+      }
     </>
   )
 }

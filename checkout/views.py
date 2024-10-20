@@ -14,16 +14,8 @@ def generate_token(request):
         error_message = f"Authentication Error"
 
         return Response({'error': error_message}, status=status.HTTP_401_UNAUTHORIZED)
-    except braintree.exceptions.AuthorizationError as e:
-        error_message = f"Authorization Error"
-
-        return Response({'error': error_message}, status=status.HTTP_403_FORBIDDEN)
-    except braintree.exceptions.NotFoundError as e:
-        error_message = f"Not Found Error"
-
-        return Response({'error': error_message}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-
+        print(e)
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])

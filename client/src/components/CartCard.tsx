@@ -18,7 +18,7 @@ export const CartCard: React.FC<{item: ICartItem, handleDeleteCartItem: (id: num
             <h3 className="dark:text-white">
               {item.product.name}
             </h3>
-            <p className="ml-4 dark:text-white">{item.product.price * item.quantity}</p>
+            <p className="ml-4 dark:text-white">${item.product.price * item.quantity}</p>
           </div>
         </div>
         <div className="flex flex-1 item.product.-end mt-8 justify-between text-sm">

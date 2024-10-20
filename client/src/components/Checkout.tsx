@@ -11,7 +11,6 @@ const Checkout: React.FC<{amount: number}> = ({amount}) => {
     useEffect(() => {
         Axios.get('/api/v1/checkout/get_token')
         .then(response => {
-            console.log(response)
             setClientToken(response.data.client_token);
         })
         .catch(error => {
@@ -23,12 +22,12 @@ const Checkout: React.FC<{amount: number}> = ({amount}) => {
         setLoading(true);
         try {
             const { nonce } = await instance.requestPaymentMethod();
-            // Enviar el nonce y la cantidad al backend para procesar el pago
             const response = await Axios.post('/api/v1/checkout/process_payment/', {
                 payment_method_nonce: nonce,
                 amount: amount
             });
 
+            console.log(response)
         } catch (error) {
             console.error(error);
         } finally {
@@ -36,19 +35,25 @@ const Checkout: React.FC<{amount: number}> = ({amount}) => {
         }
     };
 
-    if (!clientToken) {
-        return <div className="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none cursor-wait rounded">loading checkout...</div>;
-    }
-
     return (
-        <div>
-            <DropIn
-                options={{ authorization: clientToken }}
-                onInstance={instance => setInstance(instance)}
-            />
-            <button onClick={handlePayment} disabled={loading} className="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
-                {loading ? 'loading...' : 'Buy'}
-            </button>
+        <div className="absolute top-0 z-20 h-full w-full flex justify-center items-center">
+            <div className="max-w-md bg-white p-6">
+                {
+                    clientToken? (
+                        <>
+                            <DropIn
+                                options={{ authorization: clientToken }}
+                                onInstance={instance => setInstance(instance)}
+                            />
+                            <button onClick={handlePayment} disabled={loading} className="flex ml-auto w-full text-center text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
+                                {loading ? 'loading...' : 'Buy'}
+                            </button>
+                        </>
+                    ) : (
+                        <div className="max-w-md mx-auto flex ml-auto text-black border-0 py-2 px-6 focus:outline-none cursor-wait rounded">loading checkout...</div>
+                    )
+                }
+            </div>
         </div>
     );
 };
