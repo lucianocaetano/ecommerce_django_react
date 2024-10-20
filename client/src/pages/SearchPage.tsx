@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import {useInView} from "react-intersection-observer"
 import {useEffect} from "react";
 import ProductCardHorizontal from "../components/ProductCardHorizontal.tsx";
-import {Loading} from "../components/Loading.tsx";
 import {useParams} from "react-router-dom";
 
 function SearchPage(){
@@ -43,17 +42,23 @@ function SearchPage(){
   }
 
   return (
-    <div className="flex justify-center max-w-4xl mx-auto container dark:text-white pt-11">
-      {data?.pages.map((paginate, index: number)=>(
-        <div key={index}>
-          {!isLoading && paginate?.results && paginate.results.map((product: Product, index: number) => (
-            <ProductCardHorizontal key={index} product={product} />
-          ))}
-          {isLoading && (<Loading/>)}
-          {isError && (<p>{error.message}</p>)}
-        </div>
-      ))}
+
+    <div className="max-w-[700px] mx-auto mt-8 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+      <div className="flex items-center justify-between mb-4">
+        <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Latest Customers</h5>
+      </div>
+      <div className="flow-root">
+        {data?.pages.map((paginate, index: number)=>(
+          <ul key={index} className="divide-y divide-gray-200 dark:divide-gray-700">
+            {!isLoading && paginate?.results && paginate.results.map((product: Product, index: number) => (
+              <ProductCardHorizontal key={index} product={product} />
+            ))}
+            {!isLoading && paginate?.results.length === 0 && (<p>No results</p>)}
+          </ul>
+        ))}
+      </div>
     </div>
+
   );
 }
 export default SearchPage;

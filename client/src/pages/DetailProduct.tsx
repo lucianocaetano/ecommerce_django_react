@@ -1,21 +1,26 @@
 import React, {useContext} from "react"
+import { Link } from "react-router-dom";
 import {useParams} from "react-router-dom"
 import { Carousel } from "flowbite-react";
 import {useQuery} from "@tanstack/react-query"
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { MdFavoriteBorder } from "react-icons/md";
 import { get_product } from "../api/products"
 import {CartContext} from "../context/cart.context"
 import {Image} from "../Interface";
 import {Loading} from "../components/Loading.tsx"
+import {useAuthStore} from "../store/auth.ts";
 
 const DetailProduct: React.FC = () => {
   const {slug} = useParams()
+
+  const {isAuth} = useAuthStore.getState()
 
   const {data, isLoading, isError, error} = useQuery({queryKey: ["product"], queryFn: ()=>get_product(slug)})
   const {handleAddOrUpdateItem} = useContext(CartContext)
 
   const settingsCarrousel = {
-    leftControl: <div className="text-white bg-black p-2 rounded-full"><FaArrowLeft/></div>, 
+    leftControl: <div className="text-white bg-black p-2 rounded-full"><FaArrowLeft/></div>,
     rightControl: <div className="text-white bg-black p-2 rounded-full"><FaArrowRight/></div>
   }
 
@@ -26,21 +31,21 @@ const DetailProduct: React.FC = () => {
 
   return (
     <div className="text-gray-700body-font overflow-hidden">
-      
-      {!isLoading && (
-        <div className="container px-5 py-24 mx-auto">
-          <div className="mx-auto flex flex-wrap">
 
-            <div className="lg:w-1/2 flex-column bg-gray-200 dark:bg-gray-900 mt-11">
+      {!isLoading && (
+        <div className="container px-11 py-11 flex justify-center mx-auto">
+          <div className="grid w-full lg:grid-cols-2 gap-2 grid-1">
+
+            <div className="w-full h-[300px] w-1/2 flex-column bg-gray-200 dark:bg-gray-900 mt-11">
               <Carousel {... settingsCarrousel}>
                 {
                   data.images.map((item: Image)=>(
-                    <img src={item.image}/>
+                    <img src={item.image} className="object-contain w-full h-full"/>
                   ))
                 }
               </Carousel>
             </div>
-            <div className="lg:w-1/2 pl-10 py-6 mt-6 mt-0">
+            <div className="w-full max-w-xl pl-10 py-6 mt-6 mt-0">
               <h1 className="text-gray-900 dark:text-white text-3xl title-font font-medium mb-1">{data.name}</h1>
               <h2 className="text-sm title-font text-gray-500 dark:text-gray-200 tracking-widest">{data.category.name}</h2>
               <div className="flex mb-4">
@@ -83,15 +88,30 @@ const DetailProduct: React.FC = () => {
               <p className="leading-relaxed dark:text-gray-300">{data.description}</p>
               <div className="flex mt-4">
                 <span className="title-font font-medium text-2xl text-gray-900 dark:text-white">${data.price}</span>
-                <button className="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Buy</button>
-                <button
-                  className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4"
-                  onClick={()=>handleAddOrUpdateItem(data)}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                  </svg>
+
+                <button className="flex ml-auto text-white bg-red-500 border-0 px-3 focus:outline-none hover:bg-red-600 rounded-lg items-center justify-center">
+                  <MdFavoriteBorder/>
                 </button>
+
+
+                {isAuth? (
+                  <button
+                    className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4"
+                    onClick={()=>handleAddOrUpdateItem(data)}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                    </svg>
+                  </button>
+
+                ) : (
+                  <Link
+                    to="/login"
+                    className={`inline-flex items-center mx-3 px-3 py-2 text-sm font-medium focus:outline-none focus:ring-blue-300  dark:focus:ring-blue-800`}
+                  >
+                    Login <FaArrowRight className="ms-4"/>
+                  </Link>                
+                )}
               </div>
             </div>
           </div>

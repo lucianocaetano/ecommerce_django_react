@@ -40,6 +40,8 @@ const Products = ({ search }: Props) => {
 
   if (deleteProdMutation.isLoading) {return <p>loading...</p>}
 
+  if (isLoading) return <p className="text-center">loading...</p>;
+
   if (error instanceof Error) {return <>{toast.error(error.message)}</>;}
 
   return (

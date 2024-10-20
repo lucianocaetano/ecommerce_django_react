@@ -7,6 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {destroy_cart_item, get_cart, create_cart, get_cart_items, update_cart} from "../api/carts"
 import {ICartItem, Cart} from "../Interface"
 import {CartCard} from "./CartCard"
+import Checkout from "./Checkout";
 
 export const CartComponent: React.FC<{hiddenMenu: boolean, toggleHiddenMenu: () => void}> = ({hiddenMenu, toggleHiddenMenu}) => {
   const {darkMode} = useDarkMode(state => state)
@@ -146,14 +147,9 @@ export const CartComponent: React.FC<{hiddenMenu: boolean, toggleHiddenMenu: () 
                               <p>${cart.subtotal}</p>
                             </div>
                             <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                            <div className="mt-6">
-                              <a
-                                href="#"
-                                className="flex item.product.-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                              >
-                                Checkout
-                              </a>
-                            </div>
+                            
+                            <Checkout amount={cart.subtotal}/>
+
                           </>
                         )}
                       </div>

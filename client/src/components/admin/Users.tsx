@@ -31,7 +31,7 @@ const Users = ({search}: Props) => {
   useEffect(()=>{refetch()}, [search])
 
   if (isError) return toast.error("Error!");
-  if (isLoading) return <p>loading...</p>;
+  if (isLoading) return <p className="text-center">loading...</p>;
 
   return (
     <div className="overflow-x-auto">

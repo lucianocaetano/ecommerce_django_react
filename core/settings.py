@@ -1,18 +1,25 @@
 from pathlib import Path
 import os
+import braintree
+import environ
 from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-plwl(!3xawg%e$!z$&euuqw1t5_cv%jf5hugbfnhmt#z-mqb5@'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': "products.pagination.CustomPageNumberPagination",
@@ -23,6 +30,21 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ]
 }
+
+BRAINTREE_MERCHANT_ID = env("BRAINTREE_MERCHANT_ID")
+BRAINTREE_PUBLIC_KEY = env("BRAINTREE_PUBLIC_KEY")
+BRAINTREE_PRIVATE_KEY = env("BRAINTREE_PRIVATE_KEY")
+
+print(BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY)
+
+BRAINTREE_GATEWAY = braintree.BraintreeGateway(
+    braintree.Configuration(
+        braintree.Environment.Sandbox,
+        merchant_id=BRAINTREE_MERCHANT_ID,
+        public_key=BRAINTREE_PUBLIC_KEY,
+        private_key=BRAINTREE_PRIVATE_KEY
+    )
+)
 
 ALLOWED_HOSTS = []
 

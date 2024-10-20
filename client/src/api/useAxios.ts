@@ -1,4 +1,4 @@
-import axios, {AxiosRequestHeaders, InternalAxiosRequestConfig, AxiosResponse} from "axios"
+import axios, {AxiosRequestHeaders, InternalAxiosRequestConfig} from "axios"
 import { useAuthStore } from "../store/auth"
 
 export const logout = () => {

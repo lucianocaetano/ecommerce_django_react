@@ -15,7 +15,7 @@ const Header: React.FC = () => {
   const navigate = useNavigate()
 
   const [hiddenMenu, setHiddenMenu] = useState<boolean>(false)
-  const [search, setSearch] = useState<string>(null);
+  const [search, setSearch] = useState<string>("");
   const toggleHiddenMenu = () => {setHiddenMenu(!hiddenMenu)}
 
   const { toggleDarkMode, darkMode } = useDarkMode();
